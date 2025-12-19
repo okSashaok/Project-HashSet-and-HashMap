@@ -25,37 +25,24 @@ public class Main {
         Address addresInput = new Address(input, scanner.nextLine());
         System.out.print("Введите вес (кг): ");
         int kg = Integer.parseInt(scanner.nextLine());
-        var itMap = costPerAddress.entrySet().iterator();
-        boolean delivery = false;
-        while (itMap.hasNext()) {
-            var entry = itMap.next();
-            var key = entry.getKey();
-            if (
-                    key.getCountry().equals(addresInput.getCountry())
-                            && key.getCity().equals(addresInput.getCity())
-            ) {
-                uniqueCountry.add(addresInput.getCountry());
-                var value = entry.getValue();
-                System.out.print(
-                        "Стоимость доставки составит: " + value + " руб."
-                                + "\nОбщая стоимость всех доставок: " + (sum += (value * kg)) + " руб.\n"
-                );
-                var itSet = uniqueCountry.iterator();
-                System.out.print("Странны в заказах: ");
-                for (; ; ) {
-                    System.out.print(itSet.next());
-                    if (itSet.hasNext()) {
-                        System.out.print(", ");
-                        continue;
-                    }
-                    System.out.print("\n");
-                    break;
+        if (costPerAddress.containsKey(addresInput)) {
+            uniqueCountry.add(addresInput.getCountry());
+            var value = costPerAddress.get(addresInput);
+            System.out.print(
+                    "Стоимость доставки составит: " + value + " руб."
+                            + "\nОбщая стоимость всех доставок: " + (sum += (value * kg)) + " руб.\n"
+            );
+            System.out.print("Странны в заказах: ");
+            for (var itSet = uniqueCountry.iterator(); ; ) {
+                System.out.print(itSet.next());
+                if (itSet.hasNext()) {
+                    System.out.print(", ");
+                    continue;
                 }
-                delivery = true;
+                System.out.print("\n");
                 break;
             }
-        }
-        if (!delivery) {
+        } else {
             System.out.print("Доставки по этому адресу нет\n");
         }
         return true;
